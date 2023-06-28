@@ -8,14 +8,56 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var firstName: String = ""
+    @State var lastName: String = ""
+    @State var userName: String = ""
+    @State var password: String = ""
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        
+        Form {
+            
+            HStack{
+                Text("Firstname")
+                    .bold()
+                TextField("", text: $firstName)
+                
+            }
+            HStack{
+                Text("Lastname")
+                    .bold()
+                TextField("", text: $lastName)
+                
+            }
+            HStack{
+                Text("Username")
+                    .bold()
+                TextField("", text: $userName)
+                
+            }
+            HStack{
+                Text("Password")
+                    .bold()
+                TextField("", text: $password)
+                
+            }
+            Button("Sign Up") {
+                print(userName)
+                print(password)
+                SigninAPI.shared.register(fname: firstName, lname: lastName, username: userName, pwd: password, completion: {
+                    success, error in
+                    if success {
+                        print("succes")
+                    } else if error {
+                        print("error")
+                    }
+                    //
+                }
+                                          
+                )
+                
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
