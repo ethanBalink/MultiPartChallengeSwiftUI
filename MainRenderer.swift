@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct multiPartChallengeSwiftUIApp: App {
+struct MainRenderer: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
