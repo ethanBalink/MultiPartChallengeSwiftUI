@@ -14,7 +14,7 @@ class SignupAPI {
     
     func registerAPI(fname: String, lname: String, username: String, pwd: String, completion: @escaping (_ success: Bool, _ data:String?,  _ error:Error?) -> Void) {
         
-        if let url = URL(string: "https://balink.onlink.dev/register") {
+        if let url = URL(string: "https://balink.onlink.dev/users/register") {
             
             let userCred: [String: Any] = [
                 "firstname": fname,
@@ -32,12 +32,15 @@ class SignupAPI {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             URLSession.shared.dataTask(with: request) { data, response, error in
-                if let recievedToken = data {
-                    if let convertedToken = String(data: recievedToken, encoding: .utf8) {
+                if let recievedData = data {
+                    let tokenStruct = try? JSONDecoder().decode(Token.self, from: recievedData)
+                    if let convertedToken = tokenStruct?.token {
+                        self.token = convertedToken
                         completion(true, convertedToken, nil)
                     }
                     
-                } else {
+                }
+                else {
                     completion(false, nil, error)
                     print("There was an error in registration")
                 }
@@ -66,6 +69,6 @@ class SignupAPI {
         }
         
     }// func
-
+    
     
 }// class

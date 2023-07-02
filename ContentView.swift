@@ -41,6 +41,9 @@ struct ContentView: View {
                         .bold()
                     TextField("", text: $password)
                 }
+            }// form
+            .background(Color.red)
+            Spacer()
                 Button("Sign Up") {
                     GeneralVM.shared.loginButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
                         if success {
@@ -50,23 +53,14 @@ struct ContentView: View {
                         }// else
                     }// if succes
                 }// closure
-            }// func
+            Spacer()
             .navigationBarHidden(true)
             .navigationDestination(
                 isPresented: $ShowNextView) {
-                    
                     CategoriesView()
                 }
-            //                    NavigationLink(
-            //                        destination: CategoriesView()
-            //                            .navigationBarBackButtonHidden(true),
-            //                        isActive: $ShowNextView
-            //                    ) {
-            //                        EmptyView()
-            //                    }
-            //                        .hidden()
-            
-            
+                .padding(.bottom, 50)
+               
         }
     }
 }
