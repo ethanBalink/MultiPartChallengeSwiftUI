@@ -7,10 +7,8 @@
 
 import SwiftUI
 struct CategoriesView: View {
-    @State private var a = false
     var body: some View {
         if !CategorieVM.shared.categoriesArr.isEmpty {
-            
             let categoriesArr = CategorieVM.shared.categoriesArr
             NavigationView {
                 List(categoriesArr, id: \.self) { category in

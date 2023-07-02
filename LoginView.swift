@@ -1,36 +1,21 @@
 //
-//  ContentView.swift
+//  LoginView.swift
 //  multiPartChallengeSwiftUI
 //
-//  Created by EthanBalink on 28/06/2023.
+//  Created by EthanBalink on 02/07/2023.
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    
-    @State var firstName: String = ""
-    @State var lastName: String = ""
+struct LoginView: View {
     @State var userName: String = ""
     @State var password: String = ""
-    
     @State private var ShowNextView = false
-    
     var body: some View {
         
         NavigationStack {
             
             Form {
-                HStack {
-                    Text("Firstname")
-                        .bold()
-                    TextField("", text: $firstName)
-                }
-                HStack {
-                    Text("Lastname")
-                        .bold()
-                    TextField("", text: $lastName)
-                }
                 HStack {
                     Text("Username")
                         .bold()
@@ -42,10 +27,9 @@ struct ContentView: View {
                     TextField("", text: $password)
                 }
             }// form
-            .background(Color.red)
             Spacer()
-                Button("Sign Up") {
-                    GeneralVM.shared.loginButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
+                Button("Log In") {
+                    GeneralVM.shared.loginButtonAction( username: userName, password: password) { success in
                         if success {
                             ShowNextView = true
                         } else {
@@ -65,10 +49,8 @@ struct ContentView: View {
     }
 }
 
-
-
-struct ContentView_Previews: PreviewProvider {
+struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        LoginView()
     }
 }

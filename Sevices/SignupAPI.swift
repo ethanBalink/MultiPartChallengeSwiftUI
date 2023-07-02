@@ -33,7 +33,7 @@ class SignupAPI {
             
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if let recievedData = data {
-                    let tokenStruct = try? JSONDecoder().decode(Token.self, from: recievedData)
+                    let tokenStruct = try? JSONDecoder().decode(RegisterToken.self, from: recievedData)
                     if let convertedToken = tokenStruct?.token {
                         self.token = convertedToken
                         completion(true, convertedToken, nil)

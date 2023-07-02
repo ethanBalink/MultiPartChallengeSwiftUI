@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Token: Codable {
+struct RegisterToken: Codable {
     
    var token: String?
     

@@ -11,20 +11,30 @@ import SwiftUI
 struct CategoryDetailView: View {
     
     var category: String
+    @ObservedObject var myCategoryDetailViewModel = CategorieDetailViewModel()
     var body: some View {
-        if let arr = GeneralVM.shared.productArr {
-            
-            
-            List(arr) { product in
-                if product.category == category{
-                    Text(product.title)
-                    Text(product.category)
-                }
+        if let productsArray = GeneralVM.shared.productArr {
+            List(myCategoryDetailViewModel.specificCategoryArr ?? []) { product in
+                // make nice tiles in the future
+                Text("\(product.title)")
+            }
+            .onAppear {
+                
+            myCategoryDetailViewModel.getCategorieProductsFor(category, inArray: productsArray)
                 
             }
-        } else {
-            Text("kkk")
+                
+            }
+         else {
+            Text("no products to show")
         }
     }
     
 }
+
+struct CategoryDetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        CategoryDetailView(category: "smartphones")
+    }
+}
+
