@@ -6,19 +6,31 @@
 //
 
 import SwiftUI
-
 struct CategoriesView: View {
+    @State private var a = false
     var body: some View {
         if !CategorieVM.shared.categoriesArr.isEmpty {
-           let categoriesArr = CategorieVM.shared.categoriesArr
+            
+            let categoriesArr = CategorieVM.shared.categoriesArr
+            NavigationView {
                 List(categoriesArr, id: \.self) { category in
-                    Text(category)
+                    
+                    NavigationLink(destination: CategoryDetailView(category:category), label: {
+                        
+                        Text(category)
+                        
+                    })
+                    
+                    
+                    
                 }
-            } else {
-                Text("Nothing")
             }
         }
+        else {
+            Text("Nothing")
+        }
     }
+}
 
 
 extension String: Identifiable {
