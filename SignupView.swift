@@ -13,13 +13,11 @@ struct SignupView: View {
     @State var lastName: String = ""
     @State var userName: String = ""
     @State var password: String = ""
-    
+    @State private var showProgressBar = false
     @State private var ShowNextView = false
     
     var body: some View {
-        // TODO: name var in vm
         NavigationStack {
-            
             Form {
                 HStack {
                     Text("Firstname")
@@ -41,27 +39,43 @@ struct SignupView: View {
                         .bold()
                     TextField("", text: $password)
                 }
-            }// form
+            }
+            
             Spacer()
-                Button("Sign Up") {
-                    GeneralVM.shared.signupButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
-                        if success {
-                            ShowNextView = true
-                        } else {
-                            print("Unable to complete registration for some reason")
-                        }// else
-                    }// if succes
-                }// closure
+            
+            Button(action: {
+                showProgressBar = true
+                GeneralVM.shared.signupButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
+                    if success {
+                        ShowNextView = true
+                    } else {
+                        print("Unable to complete registration for some reason")
+                    }
+                }
+            }) {
+                Text("Sign Up")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding(.vertical, 20)
+            .padding(.horizontal, 50)
+            if showProgressBar {
+                ProgressView() // Display the progress bar
+                    .progressViewStyle(CircularProgressViewStyle())
+            }
+            
             Spacer()
-            .navigationBarHidden(true)
-            .navigationDestination(
-                isPresented: $ShowNextView) {
+                .navigationBarHidden(true)
+                .navigationDestination(isPresented: $ShowNextView) {
                     LoginView()
                 }
                 .padding(.bottom, 50)
-               
-        }// navigationstack
-    }// view
+            
+        }
+    }
 }
 
 
