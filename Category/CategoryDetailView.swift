@@ -15,8 +15,9 @@ struct CategoryDetailView: View {
     var body: some View {
         if let productsArray = GeneralVM.shared.productArr {
             List(myCategoryDetailViewModel.specificCategoryArr ?? []) { product in
-                // make nice tiles in the future
-                Text("\(product.title)")
+                // TODO: make nice tiles in the future
+                   SingleProductView(product: product)
+                
             }
             .onAppear {
                 
@@ -27,6 +28,8 @@ struct CategoryDetailView: View {
             }
          else {
             Text("no products to show")
+             Image(systemName: "star")
+                 .foregroundColor(.yellow)
         }
     }
     
@@ -38,3 +41,15 @@ struct CategoryDetailView_Previews: PreviewProvider {
     }
 }
 
+// MARK: if for starimage
+
+//if true {//product is a favorute
+//    Image(systemName: "star.filled")
+//        .foregroundColor(.)
+//}
+//else {
+//    Image(systemName: "star")
+//        .onTapGesture {
+//            print("tapped")
+//        }
+//}

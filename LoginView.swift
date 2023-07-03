@@ -59,7 +59,7 @@ struct LoginView: View {
                    CategoriesView()
                 }
                 .padding(.bottom, 50)
-            hh
+            
         }
     }
 }
