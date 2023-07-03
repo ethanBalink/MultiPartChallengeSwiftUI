@@ -12,7 +12,7 @@ class SignupAPI {
     
     var token: String = ""
     
-    func registerAPI(fname: String, lname: String, username: String, pwd: String, completion: @escaping (_ success: Bool, _ data:String?,  _ error:Error?) -> Void) {
+    func registerAPI(fname: String, lname: String, username: String, password: String, completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
         
         if let url = URL(string: "https://balink.onlink.dev/users/register") {
             
@@ -20,7 +20,7 @@ class SignupAPI {
                 "firstname": fname,
                 "lastname": lname,
                 "username": username,
-                "password": pwd
+                "password": password
             ]
             
             let convertedToJson = try? JSONSerialization.data(withJSONObject: userCred)
@@ -35,13 +35,14 @@ class SignupAPI {
                 if let recievedData = data {
                     let tokenStruct = try? JSONDecoder().decode(RegisterToken.self, from: recievedData)
                     if let convertedToken = tokenStruct?.token {
-                        self.token = convertedToken
-                        completion(true, convertedToken, nil)
+                        // save in userdefaults
+                        UserDefaults.standard.set(convertedToken, forKey: "savedToken")
+                        completion(true, nil)
                     }
                     
                 }
                 else {
-                    completion(false, nil, error)
+                    completion(false, error)
                     print("There was an error in registration")
                 }
             }.resume()

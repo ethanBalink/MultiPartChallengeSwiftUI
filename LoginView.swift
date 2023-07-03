@@ -12,6 +12,7 @@ struct LoginView: View {
     @State var password: String = ""
     @State private var ShowNextView = false
     @State private var showProgressBar = false
+    let myLoginVM = LoginViewModel()
     var body: some View {
         
         NavigationStack {
@@ -25,14 +26,14 @@ struct LoginView: View {
                 HStack {
                     Text("Password")
                         .bold()
-                    TextField("", text: $password)
+                    SecureField("", text: $password)
                 }
             }// form
             Spacer()
             Button(action: {
                 
                 showProgressBar = true
-                GeneralVM.shared.loginButtonAction( username: userName, password: password) { success in
+              myLoginVM.loginButtonAction( username: userName, password: password) { success in
                     if success {
                         ShowNextView = true
                     } else {

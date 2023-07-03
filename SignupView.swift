@@ -15,6 +15,7 @@ struct SignupView: View {
     @State var password: String = ""
     @State private var showProgressBar = false
     @State private var ShowNextView = false
+    let mySignupVM = SignupViewModel()
     
     var body: some View {
         NavigationStack {
@@ -45,7 +46,7 @@ struct SignupView: View {
             
             Button(action: {
                 showProgressBar = true
-                GeneralVM.shared.signupButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
+                mySignupVM.signupButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
                     if success {
                         ShowNextView = true
                     } else {
