@@ -11,20 +11,22 @@ import SwiftUI
 struct AllProductsView: View {
     
     var category: String
-    @ObservedObject var myAllProductsVM = AllProductsVM()
+    @ObservedObject var mainAllProductsVM = AllProductsVM.shared
+    
     var body: some View {
         if let productsArray = GeneralVM.shared.productArr {
             VStack {
-                Button("Toggle Favorites", action: myAllProductsVM.sortFavs)
+                Button("Toggle Favorites", action: mainAllProductsVM.sortFavs)
                     .padding()
-                List(myAllProductsVM.listOfProducts) { product in
+                List(mainAllProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
-                    SingleProductView(product: product)
+                    SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(product.id), product: product)
+                        .environmentObject(mainAllProductsVM)
                     
                 }
                 .onAppear {
                     
-                    myAllProductsVM.getCategorieProductsFor(category, inArray: productsArray)
+                    mainAllProductsVM.getCategorieProductsFor(category, inArray: productsArray)
                     
                 }
                 
@@ -45,16 +47,3 @@ struct CategoryDetailView_Previews: PreviewProvider {
         AllProductsView(category: "smartphones")
     }
 }
-
-// MARK: if for starimage
-
-//if true {//product is a favorute
-//    Image(systemName: "star.filled")
-//        .foregroundColor(.)
-//}
-//else {
-//    Image(systemName: "star")
-//        .onTapGesture {
-//            print("tapped")
-//        }
-//}

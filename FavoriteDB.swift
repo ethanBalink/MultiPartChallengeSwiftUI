@@ -13,10 +13,14 @@ final class FavoriteDB {
     func save(items: Set<Int>) {
         let array = Array(items)
         UserDefaults.standard.set(array, forKey: FAV_KEY)
+        print("saved now")
+        print(array)
     }
     
     func load() -> Set<Int> {
         let array = UserDefaults.standard.array(forKey: FAV_KEY) as? [Int] ?? [Int]()
+        print("loaded now from db")
+        print(array)
         return Set(array)
         
     }

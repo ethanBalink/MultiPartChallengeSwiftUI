@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SingleProductView: View {
-    
+    var isFavorite:Bool
     var product: Product
-    @State var starFilled = false
-    @StateObject private var favoriteViewModel = Favorites()
-    
+    @ObservedObject var mainAllProductsVM = AllProductsVM.shared
     var body: some View {
         HStack {
             VStack(alignment: .center, spacing: 6.0) {
@@ -22,14 +21,13 @@ struct SingleProductView: View {
                     .font(.headline)
                     .multilineTextAlignment(.center)
                     
-                Image(systemName: favoriteViewModel.savedItems.contains(product.id) ? "star.fill":"star")
+                Image(systemName: isFavorite ? "star.fill":"star")
                     .onTapGesture {
-                        /* changeFavoriteStatus(product)
-                         should add to favorites if it's not in favorites
-                         should remove from favorites if in favorites
-                         */
-                        favoriteViewModel.changeFavStatus(product: product)
-                        starFilled.toggle()
+                        print("before")
+                        print(mainAllProductsVM.savedFavorites)
+                        mainAllProductsVM.changeFavStatus(product: product)
+                        print("after")
+                        print(mainAllProductsVM.savedFavorites)
                     }.fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
                 .padding(.top)
@@ -96,7 +94,8 @@ struct SingleProductView_Previews: PreviewProvider {
             images: [URL(string: "https://i.dummyjson.com/data/products/1/1.jpg")!]
         )
         
-        return SingleProductView(product: product)
+        return SingleProductView(isFavorite: false, product: product)
+            .environmentObject(AllProductsVM())
     }
 }
 

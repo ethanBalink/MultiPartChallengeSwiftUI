@@ -8,13 +8,15 @@
 import Foundation
 import SwiftUI
 class AllProductsVM: ObservableObject {
-    
+   @ObservedObject static var shared = AllProductsVM()
     @Published var savedProducts: [Product]?
     @Published var showingFavs = false
-    @Published var savedFavorites: Set<Int> = [1, 7]
+    @Published var savedFavorites: Set<Int> = []
     private var db = FavoriteDB()
+    
     init() {
-        self.savedFavorites = db.load()
+        
+        //self.savedFavorites = db.load()
         
     }
     
@@ -30,6 +32,8 @@ class AllProductsVM: ObservableObject {
     }
     
     func sortFavs() {
+        //print(self.savedFavorites)
+       // self.savedFavorites = db.load()
         withAnimation() {
             showingFavs.toggle()
         }
@@ -38,6 +42,7 @@ class AllProductsVM: ObservableObject {
     var listOfProducts: [Product]  {
         if let currentProducts = savedProducts {
             if showingFavs {
+                print(self.savedFavorites)
                 return currentProducts.filter { savedFavorites.contains($0.id) }
             }
             return currentProducts
@@ -47,6 +52,16 @@ class AllProductsVM: ObservableObject {
             
         }
         
+    }
+    
+    func changeFavStatus(product: Product) {
+        
+        if savedFavorites.contains(product.id) {
+            savedFavorites.remove(product.id)
+        } else {
+            savedFavorites.insert(product.id)
+        }
+       // db.save(items: savedFavorites)
     }
     
 }
