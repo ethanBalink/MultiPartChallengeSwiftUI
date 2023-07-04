@@ -16,7 +16,7 @@ class AllProductsVM: ObservableObject {
     
     init() {
         
-        //self.savedFavorites = db.load()
+        self.savedFavorites = db.load()
         
     }
     
@@ -33,7 +33,7 @@ class AllProductsVM: ObservableObject {
     
     func sortFavs() {
         //print(self.savedFavorites)
-       // self.savedFavorites = db.load()
+        self.savedFavorites = db.load()
         withAnimation() {
             showingFavs.toggle()
         }
@@ -61,7 +61,7 @@ class AllProductsVM: ObservableObject {
         } else {
             savedFavorites.insert(product.id)
         }
-       // db.save(items: savedFavorites)
+        db.save(items: savedFavorites)
     }
     
 }
