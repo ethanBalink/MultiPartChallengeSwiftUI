@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var userName: String = ""
-    @State var password: String = ""
-    @State private var ShowNextView = false
-    @State private var showProgressBar = false
-    let myLoginVM = LoginViewModel()
+    
+    
+    @StateObject var myLoginVM = LoginViewModel()
+    @State private var showView = false
     var body: some View {
         
         NavigationStack {
@@ -21,25 +20,26 @@ struct LoginView: View {
                 HStack {
                     Text("Username")
                         .bold()
-                    TextField("", text: $userName)
+                    TextField("", text: $myLoginVM.userName)
                 }
                 HStack {
                     Text("Password")
                         .bold()
-                    SecureField("", text: $password)
+                    SecureField("", text: $myLoginVM.password)
                 }
             }// form
             Spacer()
             Button(action: {
-                
-                showProgressBar = true
-              myLoginVM.loginButtonAction( username: userName, password: password) { success in
-                    if success {
-                        ShowNextView = true
-                    } else {
-                        print("Unable to complete registration for some reason")
-                    }
-                }
+                myLoginVM.showProgressBar = true
+                myLoginVM.loginButtonAction()
+                // { success in
+                //                    if success {
+                //                        ShowNextView = true
+                //                        showProgressBar = true
+                //                    } else {
+                //                        print("Unable to complete registration for some reason")
+                //                    }
+                //                }
             }) {
                 Text("Log in")
                     .font(.headline)
@@ -50,14 +50,14 @@ struct LoginView: View {
             }
             .padding(.vertical, 20)
             .padding(.horizontal, 50)
-            if showProgressBar {
+            if myLoginVM.showProgressBar{
                 ProgressView() // Display the progress bar
                     .progressViewStyle(CircularProgressViewStyle())
             }
             Spacer()
                 .navigationBarHidden(true)
-                .navigationDestination(isPresented: $ShowNextView) {
-                   CategoriesView()
+                .navigationDestination(isPresented: $myLoginVM.showNextView) {
+                    CategoriesView()
                 }
                 .padding(.bottom, 50)
             

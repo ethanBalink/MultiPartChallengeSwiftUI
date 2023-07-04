@@ -15,12 +15,12 @@ struct SingleProductView: View {
     
     var body: some View {
         HStack {
-            VStack {
+            VStack(alignment: .center, spacing: 6.0) {
                 Text(product.brand)
                     .fontWeight(.light)
                 Text(product.title)
-                    .padding(.leading)
                     .font(.headline)
+                    .multilineTextAlignment(.center)
                     
                 Image(systemName: favoriteViewModel.savedItems.contains(product.id) ? "star.fill":"star")
                     .onTapGesture {
@@ -30,11 +30,15 @@ struct SingleProductView: View {
                          */
                         favoriteViewModel.changeFavStatus(product: product)
                         starFilled.toggle()
-                    }
+                    }.fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
                 .padding(.top)
+                
             }
-            Spacer()
+            .padding(.trailing)
+            .frame(maxWidth: .infinity)
+            
+         
             VStack {
                 Text(product.description)
                     .font(.subheadline)
@@ -44,7 +48,10 @@ struct SingleProductView: View {
                 
                 
             }
+            .frame(maxWidth: .infinity)
             thumbnailColumn()
+        
+                
         }
         .padding(.horizontal)
         .cornerRadius(10)
@@ -54,7 +61,7 @@ struct SingleProductView: View {
     @ViewBuilder
     private func thumbnailColumn() -> some View {
         VStack{
-            AsyncImage(url: product.thumbnail,scale: 4)
+            AsyncImage(url: product.thumbnail,scale: 5)
                 .cornerRadius(10)
             
             Text("$\(product.price)")
@@ -63,6 +70,7 @@ struct SingleProductView: View {
             
             // add star for favorites
         }
+        
     }
 }
 

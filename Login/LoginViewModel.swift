@@ -6,21 +6,30 @@
 //
 
 import Foundation
-
-class LoginViewModel {
-
-    func loginButtonAction(username: String, password: String,_ completion: @escaping (_ success: Bool) -> Void) {
-        if ( InputValidation.inputIsValid(username, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
+import SwiftUI
+class LoginViewModel: ObservableObject {
+    @Published var userName: String = ""
+    @Published var password: String = ""
+    @Published var showNextView = false
+    @Published var showProgressBar = false
+    
+    func loginButtonAction() {
+        if ( InputValidation.inputIsValid(userName, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
             
-            login(username: username,password: password) { success in
+            login(username: userName,password: password) { success in
                 if success {
                     // TODO: change fetchproducts to different file
                     GeneralVM.shared.fetchProducts { success in
                         if success {
-                            completion(true)
+                            DispatchQueue.main.async {
+                                self.showProgressBar = false
+                                self.showNextView = true
+                            }
+                            
                         }// if success fetchProducts
                         else {
-                            completion(false)
+                            print("Unable to get products for some reason")
+                            self.showProgressBar = false
                         }
                     } // closure fetchProducts
                 }// if success login
@@ -37,11 +46,10 @@ class LoginViewModel {
         LoginAPI.shared.loginAPI(username: username, password: password, {success,error in
             
             if success {
-                    // TODO: save token in userdefaults
-                    completion(true)
-                }
-                
-          else if error != nil {
+                completion(true)
+            }
+            
+            else if error != nil {
                 print(error ?? "")
                 completion(false)
             }
