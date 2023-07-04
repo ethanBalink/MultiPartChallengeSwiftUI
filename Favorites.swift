@@ -9,7 +9,6 @@ import UIKit
 
 class Favorites: ObservableObject {
     
-   
     @Published var showingFavs = false
     @Published var savedItems: Set<Int> = [1, 3]
     private var db = FavoriteDB()
