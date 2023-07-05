@@ -28,10 +28,6 @@ struct SearchView: View {
             mySearchVM.filterProducts()
         }
         
-//        .onSubmit(of: .search) {
-//            mySearchVM.filterProducts()
-//        }
-        
     }
     
     

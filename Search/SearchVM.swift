@@ -19,17 +19,21 @@ class SearchVM: ObservableObject {
     }
     
     func filterProducts() {
-        
-        if !filteredProducts.isEmpty, !searchQuery.isEmpty {
+        if let allProductsArr = GeneralVM.shared.productArr {
             
-            filteredProducts = filteredProducts.filter {
-                $0.title
-                    .hasPrefix(searchQuery)
+            if !searchQuery.isEmpty {
+                filteredProducts = allProductsArr.filter {
+                    var productTitleWordsArr =  $0.title.lowercased().split(separator: " ")
+                    for partOfTitle in productTitleWordsArr {
+                        if partOfTitle.hasPrefix(searchQuery.lowercased()) {
+                            return true
+                        }
+                    }
+                    return false
+                }
             }
-        }
-        
-        else {
-            if let allProductsArr = GeneralVM.shared.productArr {
+            
+            else {
                 
                 filteredProducts = allProductsArr
                 
