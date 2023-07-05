@@ -11,20 +11,26 @@ struct CategoriesView: View {
         if !CategorieVM.shared.categoriesArr.isEmpty {
             let categoriesArr = CategorieVM.shared.categoriesArr
             NavigationView {
-                List(categoriesArr, id: \.self) { category in
-                    
-                    NavigationLink(destination: AllProductsView(category:category), label: {
-                        
-                        Text(category.capitalized)
+                VStack{
+                    NavigationLink(destination: SearchView(), label: { Image(systemName: "magnifyingglass")
                         
                     })
-                    
-                    
-                    
+                   
+                        
+                    List(categoriesArr, id: \.self) { category in
+                        
+                        NavigationLink(destination: AllProductsView(category:category), label: {
+                            
+                            Text(category.capitalized)
+                            
+                        })
+                        
+                    }
                 }
             }
         }
         else {
+            
             Text("Nothing")
         }
     }
@@ -37,3 +43,12 @@ extension String: Identifiable {
         return hash
     }
 }
+struct CategoriesView_Previews: PreviewProvider {
+    static var previews: some View {
+       
+        return CategoriesView()
+            
+    }
+}
+
+

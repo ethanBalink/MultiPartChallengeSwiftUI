@@ -42,9 +42,6 @@ struct SingleProductView: View {
                     .font(.subheadline)
                     .lineLimit(4)
                 
-                
-                
-                
             }
             .frame(maxWidth: .infinity)
             thumbnailColumn()
