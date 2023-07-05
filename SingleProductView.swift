@@ -23,12 +23,9 @@ struct SingleProductView: View {
                     
                 Image(systemName: isFavorite ? "star.fill":"star")
                     .onTapGesture {
-                        print("before")
-                        print(mainAllProductsVM.savedFavorites)
                         mainAllProductsVM.changeFavStatus(product: product)
-                        print("after")
-                        print(mainAllProductsVM.savedFavorites)
-                    }.fixedSize(horizontal: false, vertical: true)
+                    }
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
                 .padding(.top)
                 

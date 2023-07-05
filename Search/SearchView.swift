@@ -10,58 +10,30 @@ import SwiftUI
 struct SearchView: View {
     
     @ObservedObject var mainAllProductsVM = AllProductsVM.shared
-    @State var searchQuery = ""
-    @State var filteredProducts:[Product] = []
+    
+    @StateObject var mySearchVM = SearchVM()
     
     var body: some View {
         VStack {
             
-            List(filteredProducts) { product in
+            List(mySearchVM.filteredProducts) { product in
                 // TODO: make nice tiles in the future
                 SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(product.id), product: product)
                     .environmentObject(mainAllProductsVM)
                 
-                
-                
             }
         }
-        .searchable(text: $searchQuery, prompt: "Search Product"
-        )
-        .onChange(of: searchQuery) { _ in
-            filterProducts()
+        .searchable(text: $mySearchVM.searchQuery, placement: .navigationBarDrawer, prompt: "Search Product")
+        .onChange(of: mySearchVM.searchQuery) { _ in
+            mySearchVM.filterProducts()
         }
         
-        .onSubmit(of: .search) {
-            filterProducts()
-        }
-        .onAppear(perform: {
-            if let allProductsArr = GeneralVM.shared.productArr {
-                filteredProducts = allProductsArr
-            }})
+//        .onSubmit(of: .search) {
+//            mySearchVM.filterProducts()
+//        }
         
     }
     
-    func filterProducts() {
-        if let allProductsArr = GeneralVM.shared.productArr {
-            if !searchQuery.isEmpty {
-                
-                filteredProducts = allProductsArr.filter {
-                    $0.title
-                        .localizedCaseInsensitiveContains(searchQuery)
-                }
-            }
-            
-            else {
-                
-                filteredProducts = allProductsArr
-            }
-        }
-    }
-}
-
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
+    
+    
 }
