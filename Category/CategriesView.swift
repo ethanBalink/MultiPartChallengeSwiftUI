@@ -11,12 +11,8 @@ struct CategoriesView: View {
         if !CategorieVM.shared.categoriesArr.isEmpty {
             let categoriesArr = CategorieVM.shared.categoriesArr
             NavigationView {
-                VStack{
-                    NavigationLink(destination: SearchView(), label: { Image(systemName: "magnifyingglass")
-                        
-                    })
-                   
-                        
+                VStack {
+                    
                     List(categoriesArr, id: \.self) { category in
                         
                         NavigationLink(destination: AllProductsView(category:category), label: {
@@ -27,6 +23,13 @@ struct CategoriesView: View {
                         
                     }
                 }
+            }
+            .navigationTitle("Categories")
+            .toolbar {
+                NavigationLink(destination: SearchView(),label: {
+                    Image(systemName: "doc.text.magnifyingglass")
+                })
+                
             }
         }
         else {
@@ -45,9 +48,9 @@ extension String: Identifiable {
 }
 struct CategoriesView_Previews: PreviewProvider {
     static var previews: some View {
-       
+        
         return CategoriesView()
-            
+        
     }
 }
 

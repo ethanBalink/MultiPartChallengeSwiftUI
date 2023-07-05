@@ -14,12 +14,12 @@ struct SingleProductView: View {
     @ObservedObject var mainAllProductsVM = AllProductsVM.shared
     var body: some View {
         HStack {
-            VStack(alignment: .center, spacing: 6.0) {
+            VStack(alignment: .leading, spacing: 6.0) {
                 Text(product.brand)
                     .fontWeight(.light)
                 Text(product.title)
                     .font(.headline)
-                    .multilineTextAlignment(.center)
+                    
                     
                 Image(systemName: isFavorite ? "star.fill":"star")
                     .onTapGesture {
@@ -27,14 +27,14 @@ struct SingleProductView: View {
                     }
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
-                .padding(.top)
+                .padding(.leading)
+              
                 
             }
-            .padding(.trailing)
             .frame(maxWidth: .infinity)
             
          
-            VStack {
+            VStack (alignment: .leading, spacing: 6.0) {
                 Text(product.description)
                     .font(.subheadline)
                     .lineLimit(4)

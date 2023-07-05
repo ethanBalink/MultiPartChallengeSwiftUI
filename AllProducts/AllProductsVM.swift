@@ -43,7 +43,9 @@ class AllProductsVM: ObservableObject {
         if let currentProducts = savedProducts {
             if showingFavs {
                 print(self.savedFavorites)
-                return currentProducts.filter { savedFavorites.contains($0.id) }
+                return currentProducts.filter { savedFavorites.contains($0.id)
+                    
+                }
             }
             return currentProducts
         }

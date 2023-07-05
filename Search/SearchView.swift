@@ -23,9 +23,21 @@ struct SearchView: View {
                 
             }
         }
-        .searchable(text: $mySearchVM.searchQuery, placement: .navigationBarDrawer, prompt: "Search Product")
+        .searchable(text: $mySearchVM.searchQuery, prompt: "Search Product Or Brand")
         .onChange(of: mySearchVM.searchQuery) { _ in
             mySearchVM.filterProducts()
+        }
+        .onChange(of: AllProductsVM.shared.savedFavorites) { _ in
+            mySearchVM.toggleFavorites()
+        }
+        .toolbar {
+            Button(action: {
+                mySearchVM.showFavs.toggle()
+                mySearchVM.toggleFavorites()
+                
+            }, label: {
+                Image(systemName: "text.badge.star")
+            })
         }
         
     }
