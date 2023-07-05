@@ -23,6 +23,7 @@ struct SearchView: View {
                 
             }
         }
+        .navigationTitle("All Products")
         .searchable(text: $mySearchVM.searchQuery, prompt: "Search Product Or Brand")
         .onChange(of: mySearchVM.searchQuery) { _ in
             mySearchVM.filterProducts()
@@ -36,7 +37,7 @@ struct SearchView: View {
                 mySearchVM.toggleFavorites()
                 
             }, label: {
-                Image(systemName: "text.badge.star")
+                Image(systemName:  mySearchVM.showFavs ? "star.slash.fill": "star.fill")
             })
         }
         

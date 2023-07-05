@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 class LoginAPI {
     
     static var shared = LoginAPI()
     var token: String = ""
+    
     func loginAPI(username: String, password: String,_ completion:@escaping (_ success: Bool, _ error:Error?) -> Void) {
         
         if let url = URL(string: "https://balink.onlink.dev/users/login") {

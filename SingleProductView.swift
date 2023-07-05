@@ -14,36 +14,12 @@ struct SingleProductView: View {
     @ObservedObject var mainAllProductsVM = AllProductsVM.shared
     var body: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 6.0) {
-                Text(product.brand)
-                    .fontWeight(.light)
-                Text(product.title)
-                    .font(.headline)
-                    
-                    
-                Image(systemName: isFavorite ? "star.fill":"star")
-                    .onTapGesture {
-                        mainAllProductsVM.changeFavStatus(product: product)
-                    }
-                .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(.yellow)
-                .padding(.leading)
-              
-                
-            }
-            .frame(maxWidth: .infinity)
-            
-         
-            VStack (alignment: .leading, spacing: 6.0) {
-                Text(product.description)
-                    .font(.subheadline)
-                    .lineLimit(4)
-                
-            }
-            .frame(maxWidth: .infinity)
+            titleColumn()
+                .frame(maxWidth: .infinity)
+            descriptionColumn()
+                .frame(maxWidth: .infinity)
             thumbnailColumn()
-        
-                
+            
         }
         .padding(.horizontal)
         .cornerRadius(10)
@@ -52,15 +28,48 @@ struct SingleProductView: View {
     
     @ViewBuilder
     private func thumbnailColumn() -> some View {
-        VStack{
+        VStack {
+            
             AsyncImage(url: product.thumbnail,scale: 5)
                 .cornerRadius(10)
             
             Text("$\(product.price)")
                 .foregroundColor(.green)
             
+        }
+        
+    }
+    
+    @ViewBuilder
+    private func titleColumn() -> some View {
+        VStack(alignment: .leading, spacing: 6.0) {
             
-            // add star for favorites
+            Text(product.brand)
+                .fontWeight(.light)
+            Text(product.title)
+                .font(.headline)
+            
+            Image(systemName: isFavorite ? "star.fill":"star")
+                .onTapGesture {
+                    mainAllProductsVM.changeFavStatus(product: product)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(.yellow)
+                .padding(.leading)
+            
+            
+        }
+        
+    }
+    
+    @ViewBuilder
+    private func descriptionColumn() -> some View {
+        VStack (alignment: .leading, spacing: 6.0) {
+            
+            Text(product.description)
+                .font(.subheadline)
+                .lineLimit(4)
+            
         }
         
     }

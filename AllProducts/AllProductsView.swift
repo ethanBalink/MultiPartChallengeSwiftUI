@@ -16,8 +16,7 @@ struct AllProductsView: View {
     var body: some View {
         if let productsArray = GeneralVM.shared.productArr {
             VStack {
-                Button("Toggle Favorites", action: mainAllProductsVM.sortFavs)
-                    .padding()
+                
                 List(mainAllProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
                     SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(product.id), product: product)
@@ -31,12 +30,17 @@ struct AllProductsView: View {
                 }
                 
             }
-        }
-            else {
-                Text("no products to show")
-                Image(systemName: "star")
-                    .foregroundColor(.yellow)
+            .toolbar {
+                Button(action: mainAllProductsVM.sortFavs, label: {
+                    Image(systemName:  mainAllProductsVM.showingFavs ? "star.slash.fill": "star.fill")
+                })
             }
+        }
+        else {
+            Text("no products to show")
+            Image(systemName: "star")
+                .foregroundColor(.yellow)
+        }
         
     }
     
