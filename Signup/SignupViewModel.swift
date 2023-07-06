@@ -29,7 +29,7 @@ class SignupViewModel: ObservableObject {
             
             SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password) { success, error in
                 if success {
-                    GeneralVM.shared.fetchProducts { success in
+                    AllProducts.shared.fetchProducts { success in
                         if success {
                             DispatchQueue.main.async {
                                 self.showProgressBar = false

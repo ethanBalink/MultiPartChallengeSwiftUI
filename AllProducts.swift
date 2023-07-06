@@ -6,10 +6,11 @@
 //
 
 import Foundation
-class GeneralVM {
+
+class AllProducts {
     
     var productArr: [Product]?
-    static let shared = GeneralVM()
+    static let shared = AllProducts()
     
     
     

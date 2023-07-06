@@ -14,7 +14,7 @@ struct CategoryProducts: View {
     @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
     
     var body: some View {
-        if let productsArray = GeneralVM.shared.productArr {
+        if let productsArray = AllProducts.shared.productArr {
             
             NavigationView {
                 

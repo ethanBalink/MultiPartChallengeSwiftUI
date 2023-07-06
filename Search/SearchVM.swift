@@ -19,13 +19,13 @@ class SearchVM: ObservableObject {
     }
     
     func getAllProducts() {
-        if let allProductsArr = GeneralVM.shared.productArr {
+        if let allProductsArr = AllProducts.shared.productArr {
             filteredProducts = allProductsArr
         }
     }
     
     func filterProducts() {
-        if let allProductsArr = GeneralVM.shared.productArr {
+        if let allProductsArr = AllProducts.shared.productArr {
             if !searchQuery.isEmpty {
                 filteredProducts = allProductsArr.filter {
                     if let title = Unwrapper.unwrap($0.title), let brand = Unwrapper.unwrap($0.brand) {

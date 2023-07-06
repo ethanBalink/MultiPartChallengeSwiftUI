@@ -26,7 +26,7 @@ class LoginViewModel: ObservableObject {
             LoginAPI.shared.loginAPI(username: username, password: password) { success,error in
                 
                 if success {
-                    GeneralVM.shared.fetchProducts { success in
+                    AllProducts.shared.fetchProducts { success in
                         if success {
                             DispatchQueue.main.async {
                                 self.showNextView = true

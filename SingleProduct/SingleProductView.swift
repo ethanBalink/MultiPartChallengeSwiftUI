@@ -13,7 +13,7 @@ struct SingleProductView: View {
     var isFavorite:Bool
     var product: Product
     var toggleFavorites: () -> Void
-    @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
+    
     var body: some View {
         HStack {
             titleColumn()
@@ -36,7 +36,7 @@ struct SingleProductView: View {
             AsyncImage(url: product.thumbnail,scale: 5)
                 .cornerRadius(10)
             
-            Text("$" + String(Unwrapper.unwrap(product.price) ?? 0) )
+            Text("$" + String(product.price ?? 0) )
                 .foregroundColor(.green)
                 .bold()
             
@@ -50,7 +50,7 @@ struct SingleProductView: View {
             
             Text(product.brand ?? "")
                 .fontWeight(.light)
-            Text(Unwrapper.unwrap(product.title) ?? "")
+            Text(product.title ?? "")
                 .font(.headline)
             
             Image(systemName: isFavorite ? "star.fill":"star")
@@ -70,7 +70,7 @@ struct SingleProductView: View {
     private func descriptionColumn() -> some View {
         VStack (alignment: .leading, spacing: 6.0) {
             
-            Text(Unwrapper.unwrap(product.description) ?? "")
+            Text(product.description ?? "")
                 .font(.subheadline)
                 .lineLimit(4)
             
