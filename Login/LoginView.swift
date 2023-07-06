@@ -15,39 +15,13 @@ struct LoginView: View {
         
         NavigationStack {
             VStack {
-                VStack(spacing: 20) {
-                    Divider()
-                    HStack {
-                        Text("Username")
-                            .bold()
-                        TextField("", text: $myLoginVM.userName)
-                            .frame(height: 30.0)
-                            .background(.ultraThinMaterial)
-                    }
-                    Divider()
-                    HStack {
-                        Text("Password")
-                            .bold()
-                        SecureField("", text: $myLoginVM.password)
-                            .frame(height: 30.0)
-                            .background(.ultraThinMaterial)
-                    }
-                    Divider()
-                }
-                .cornerRadius(10)
-                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-        
-                Button(action: {
-                    myLoginVM.showProgressBar = true
-                    myLoginVM.loginButtonAction()
-                }) {
-                    Text("Log in")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
-                }
+                
+                inputFields()
+                
+                    .cornerRadius(10)
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                
+                loginButton()
                 
                 if myLoginVM.showProgressBar{
                     ProgressView() // Display the progress bar
@@ -60,12 +34,53 @@ struct LoginView: View {
                     .navigationDestination(isPresented: $myLoginVM.showNextView) {
                         CategoriesView()
                     }
-                                    
+                
             }
         }
-       
+        
         
     }
+    
+    @ViewBuilder
+    private func inputFields() -> some View {
+        
+        VStack(spacing: 20) {
+            Divider()
+            HStack {
+                Text("Username")
+                    .bold()
+                TextField("", text: $myLoginVM.userName)
+                    .frame(height: 30.0)
+                    .background(.ultraThinMaterial)
+            }
+            Divider()
+            HStack {
+                Text("Password")
+                    .bold()
+                SecureField("", text: $myLoginVM.password)
+                    .frame(height: 30.0)
+                    .background(.ultraThinMaterial)
+            }
+            Divider()
+        }
+    }
+    
+    @ViewBuilder
+    private func loginButton() -> some View {
+        Button(action: {
+            myLoginVM.showProgressBar = true
+            myLoginVM.loginButtonAction()
+        }) {
+            Text("Log in")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+        }
+    }
+    
+    
 }
 
 

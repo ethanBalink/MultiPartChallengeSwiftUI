@@ -13,7 +13,7 @@ class CategorieVM {
     
     func getSingleCategory(productArr:[Product]) {
         for product in productArr {
-            if let productCategory = Unwrapper.unwrap(product.category){
+            if let productCategory = Unwrapper.unwrap(product.category) {
                 if !(self.categoriesArr.contains(productCategory)) {
                     self.categoriesArr.append(productCategory)
                 }
@@ -21,3 +21,12 @@ class CategorieVM {
         }
     }
 }
+    extension String: Identifiable {
+        public typealias ID = Int
+        public var id: Int {
+            return hash
+        }
+    }
+    
+    
+

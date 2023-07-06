@@ -9,7 +9,7 @@ import Foundation
 
 class SignupAPI {
     
-    static func registerAPI(fname: String, lname: String, username: String, password: String, completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
+    static func registerAPI(fname: String, lname: String, username: String, password: String,_ completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
         
         if let url = URL(string: "https://balink.onlink.dev/users/register") {
             

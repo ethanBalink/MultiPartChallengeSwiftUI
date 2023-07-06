@@ -14,23 +14,18 @@ struct CategoriesView: View {
         if !CategorieVM.shared.categoriesArr.isEmpty {
             let categoriesArr = CategorieVM.shared.categoriesArr
             NavigationView {
-               
+                
+                List(categoriesArr, id: \.self) { category in
                     
-                    List(categoriesArr, id: \.self) { category in
-                        
-                        NavigationLink(destination: AllProductsView(category:category), label: {
-                            
-                            Text(category.capitalized)
-                            
-                        })
-                        
-                    }
+                    NavigationLink(destination: AllProductsView(category:category), label: {
+                        Text(category.capitalized)
+                    })
+                }
                 
             }
             .navigationTitle("Categories")
-        
+            
             .toolbar {
-                
                 NavigationLink(destination: SearchView(),label: {
                     Image(systemName: "magnifyingglass")
                 })
@@ -39,18 +34,13 @@ struct CategoriesView: View {
         }
         else {
             
-            Text("Nothing")
+            Text("No Categories")
         }
     }
 }
 
 
-extension String: Identifiable {
-    public typealias ID = Int
-    public var id: Int {
-        return hash
-    }
-}
+
 struct CategoriesView_Previews: PreviewProvider {
     static var previews: some View {
         

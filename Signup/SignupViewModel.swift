@@ -15,15 +15,20 @@ class SignupViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var showProgressBar = false
     @Published var showNextView = false
-
-   
+    
+    
     
     func signupButtonAction() {
         
+        register(fname: firstName, lname: lastName, username: userName, password: password)
+    }
+    
+    
+    func register(fname: String, lname: String, username: String, password: String) {
         if (InputValidation.inputIsValid(firstName, ofType: "name") && InputValidation.inputIsValid(lastName, ofType: "name") && InputValidation.inputIsValid(userName, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
-            register(fname: firstName, lname: lastName, username: userName, password: password) { success in
+            
+            SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password) { success, error in
                 if success {
-                    // TODO: change fetchproducts to different file
                     GeneralVM.shared.fetchProducts { success in
                         if success {
                             DispatchQueue.main.async {
@@ -33,36 +38,16 @@ class SignupViewModel: ObservableObject {
                         else {
                             print("Unable to get products for some reason")
                             self.showProgressBar = false
-
+                            
                         }
-                    } // closure fetchProducts
-                }// if success register
-                
-            }// closure register
-            
-        }// if validation
-        else {
-            print("invalid unput")
-        }
-    }// func signup
-    
-    
-    func register(fname: String, lname: String, username: String, password: String,_ completion: @escaping (_ success: Bool) -> Void) {
-        SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password, completion: { success, error in
-            if success {
-                    // TODO: change fetchproducts to different file
-                    completion(true)
+                    }
                 }
                 
-             else if error != nil {
-                 print(error as Any)
-                completion(false)
             }
-            else {
-                print("mistake")
-                completion(false)
-            }
-        })
+        }
+        else {
+            print("invalid input")
+        }
     }
     
     
