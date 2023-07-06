@@ -9,13 +9,7 @@ import SwiftUI
 
 struct SignupView: View {
     
-    @State var firstName: String = ""
-    @State var lastName: String = ""
-    @State var userName: String = ""
-    @State var password: String = ""
-    @State private var showProgressBar = false
-    @State private var ShowNextView = false
-    let mySignupVM = SignupViewModel()
+    @StateObject var mySignupVM = SignupViewModel()
     
     var body: some View {
         NavigationStack {
@@ -24,7 +18,7 @@ struct SignupView: View {
                 HStack {
                     Text("Firstname")
                         .bold()
-                    TextField("", text: $firstName)
+                    TextField("", text: $mySignupVM.firstName)
                         .frame(height: 30.0)
                         .background(.ultraThinMaterial)
                 }
@@ -33,7 +27,7 @@ struct SignupView: View {
                 HStack {
                     Text("Lastname")
                         .bold()
-                    TextField("", text: $lastName)
+                    TextField("", text: $mySignupVM.lastName)
                         .frame(height: 30.0)
                         .background(.ultraThinMaterial)
                 }
@@ -41,7 +35,7 @@ struct SignupView: View {
                 HStack {
                     Text("Username")
                         .bold()
-                    TextField("", text: $userName)
+                    TextField("", text: $mySignupVM.userName)
                         .frame(height: 30.0)
                         .background(.ultraThinMaterial)
                 }
@@ -49,7 +43,7 @@ struct SignupView: View {
                 HStack {
                     Text("Password")
                         .bold()
-                    SecureField("", text: $password)
+                    SecureField("", text: $mySignupVM.password)
                         .frame(height: 30.0)
                         .background(.ultraThinMaterial)
                 }
@@ -60,25 +54,18 @@ struct SignupView: View {
           
             
             Button(action: {
-                showProgressBar = true
-                mySignupVM.signupButtonAction(fname: firstName, lname: lastName, username: userName, pwd: password) { success in
-                    if success {
-                        ShowNextView = true
-                    } else {
-                        print("Unable to complete registration for some reason")
-                    }
-                }
-            }) {
+                mySignupVM.showProgressBar = true
+                mySignupVM.signupButtonAction()},label: {
                 Text("Sign Up")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
                     .background(Color.blue)
                     .cornerRadius(10)
-            }
+            })
             .padding(.vertical, 20)
             .padding(.horizontal, 50)
-            if showProgressBar {
+            if mySignupVM.showProgressBar {
                 ProgressView() // Display the progress bar
                     .progressViewStyle(CircularProgressViewStyle())
             }
@@ -86,7 +73,7 @@ struct SignupView: View {
             Spacer()
                 .navigationTitle("Signup")
                 .navigationBarBackButtonHidden()
-                .navigationDestination(isPresented: $ShowNextView) {
+                .navigationDestination(isPresented: $mySignupVM.showNextView) {
                     LoginView()
                 }
                 .padding(.bottom, 50)

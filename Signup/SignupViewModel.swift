@@ -7,10 +7,48 @@
 
 import Foundation
 
-class SignupViewModel {
+class SignupViewModel: ObservableObject {
     
-    func register(fname: String, lname: String, username: String, pwd: String,_ completion: @escaping (_ success: Bool) -> Void) {
-        SignupAPI.shared.registerAPI(fname: fname, lname: lname, username: username, password: pwd, completion: { success, error in
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var userName: String = ""
+    @Published var password: String = ""
+    @Published var showProgressBar = false
+    @Published var showNextView = false
+
+   
+    
+    func signupButtonAction() {
+        
+        if (InputValidation.inputIsValid(firstName, ofType: "name") && InputValidation.inputIsValid(lastName, ofType: "name") && InputValidation.inputIsValid(userName, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
+            register(fname: firstName, lname: lastName, username: userName, password: password) { success in
+                if success {
+                    // TODO: change fetchproducts to different file
+                    GeneralVM.shared.fetchProducts { success in
+                        if success {
+                            DispatchQueue.main.async {
+                                self.showProgressBar = false
+                                self.showNextView = true
+                            }                        }// if success fetchProducts
+                        else {
+                            print("Unable to get products for some reason")
+                            self.showProgressBar = false
+
+                        }
+                    } // closure fetchProducts
+                }// if success register
+                
+            }// closure register
+            
+        }// if validation
+        else {
+            print("invalid unput")
+        }
+    }// func signup
+    
+    
+    func register(fname: String, lname: String, username: String, password: String,_ completion: @escaping (_ success: Bool) -> Void) {
+        SignupAPI.shared.registerAPI(fname: fname, lname: lname, username: username, password: password, completion: { success, error in
             if success {
                     // TODO: change fetchproducts to different file
                     completion(true)
@@ -26,30 +64,6 @@ class SignupViewModel {
             }
         })
     }
-    
-    func signupButtonAction(fname: String, lname: String, username: String, pwd: String,_ completion: @escaping (_ success: Bool) -> Void) {
-        
-        if (InputValidation.inputIsValid(fname, ofType: "name") && InputValidation.inputIsValid(lname, ofType: "name") && InputValidation.inputIsValid(username, ofType: "email") && InputValidation.inputIsValid(pwd, ofType: "password")) {
-            register(fname: fname, lname: lname, username: username, pwd: pwd) { success in
-                if success {
-                    // TODO: change fetchproducts to different file
-                    GeneralVM.shared.fetchProducts { success in
-                        if success {
-                            completion(true)
-                        }// if success fetchProducts
-                        else {
-                            completion(false)
-                        }
-                    } // closure fetchProducts
-                }// if success register
-                
-            }// closure register
-            
-        }// if validation
-        else {
-            print("invalid unput")
-        }
-    }// func signup
     
     
     

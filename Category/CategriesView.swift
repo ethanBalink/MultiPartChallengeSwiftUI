@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+
 struct CategoriesView: View {
+    
     var body: some View {
+        
         if !CategorieVM.shared.categoriesArr.isEmpty {
             let categoriesArr = CategorieVM.shared.categoriesArr
             NavigationView {
-                VStack {
+               
                     
                     List(categoriesArr, id: \.self) { category in
                         
@@ -22,12 +25,14 @@ struct CategoriesView: View {
                         })
                         
                     }
-                }
+                
             }
             .navigationTitle("Categories")
+        
             .toolbar {
+                
                 NavigationLink(destination: SearchView(),label: {
-                    Image(systemName: "doc.text.magnifyingglass")
+                    Image(systemName: "magnifyingglass")
                 })
                 
             }

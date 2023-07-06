@@ -11,12 +11,10 @@ struct LoginView: View {
     
     
     @StateObject var myLoginVM = LoginViewModel()
-    @State private var showView = false
     var body: some View {
         
         NavigationStack {
             VStack {
-//                Form {
                 VStack(spacing: 20) {
                     Divider()
                     HStack {
@@ -38,11 +36,7 @@ struct LoginView: View {
                 }
                 .cornerRadius(10)
                 .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-                
-//                }
-                
-                
-//                Spacer()
+        
                 Button(action: {
                     myLoginVM.showProgressBar = true
                     myLoginVM.loginButtonAction()
@@ -60,6 +54,7 @@ struct LoginView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                 }
                 Spacer()
+                
                     .navigationTitle("Login")
                     .navigationBarBackButtonHidden()
                     .navigationDestination(isPresented: $myLoginVM.showNextView) {
@@ -75,6 +70,7 @@ struct LoginView: View {
 
 
 struct LoginView_Previews: PreviewProvider {
+    
     static var previews: some View {
         LoginView()
     }
