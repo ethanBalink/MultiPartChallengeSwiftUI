@@ -22,7 +22,7 @@ class LoginViewModel: ObservableObject {
     
     
     func login(username: String, password: String) {
-        if ( InputValidation.inputIsValid(userName, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
+        if ( InputValidation.isValid(userName, ofType: "email") && InputValidation.isValid(password, ofType: "password")) {
             LoginAPI.shared.loginAPI(username: username, password: password) { success,error in
                 
                 if success {

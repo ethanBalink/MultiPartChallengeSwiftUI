@@ -8,19 +8,24 @@
 import Foundation
 import SwiftUI
 
-struct AllProductsView: View {
+struct CategoryProducts: View {
     
     var category: String
-    @ObservedObject var mainAllProductsVM = AllProductsVM.shared
+    @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
     
     var body: some View {
         if let productsArray = GeneralVM.shared.productArr {
+            
             NavigationView {
                 
                 List(mainAllProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
                     if let id = Unwrapper.unwrap(product.id) {
-                        SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product)
+                        
+                        SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
+                            mainAllProductsVM.changeFavStatus(product: product)
+                        }
+                        )
                             .environmentObject(mainAllProductsVM)
                     }
                     
@@ -40,9 +45,7 @@ struct AllProductsView: View {
             }
         }
         else {
-            Text("no products to show")
-            Image(systemName: "star")
-                .foregroundColor(.yellow)
+            Text("No Products In Category 😔")
         }
         
     }
@@ -51,6 +54,6 @@ struct AllProductsView: View {
 
 struct CategoryDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        AllProductsView(category: "smartphones")
+        CategoryProducts(category: "smartphones")
     }
 }

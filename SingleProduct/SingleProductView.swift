@@ -9,9 +9,11 @@ import SwiftUI
 import Combine
 
 struct SingleProductView: View {
+    
     var isFavorite:Bool
     var product: Product
-    @ObservedObject var mainAllProductsVM = AllProductsVM.shared
+    var toggleFavorites: () -> Void
+    @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
     var body: some View {
         HStack {
             titleColumn()
@@ -28,6 +30,7 @@ struct SingleProductView: View {
     
     @ViewBuilder
     private func thumbnailColumn() -> some View {
+        
         VStack {
             
             AsyncImage(url: product.thumbnail,scale: 5)
@@ -45,14 +48,14 @@ struct SingleProductView: View {
     private func titleColumn() -> some View {
         VStack(alignment: .leading, spacing: 6.0) {
             
-            Text(Unwrapper.unwrap(product.brand) ?? "")
+            Text(product.brand ?? "")
                 .fontWeight(.light)
             Text(Unwrapper.unwrap(product.title) ?? "")
                 .font(.headline)
             
             Image(systemName: isFavorite ? "star.fill":"star")
                 .onTapGesture {
-                    mainAllProductsVM.changeFavStatus(product: product)
+                 toggleFavorites()
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
@@ -98,8 +101,10 @@ struct SingleProductView_Previews: PreviewProvider {
             images: [URL(string: "https://i.dummyjson.com/data/products/1/1.jpg")!]
         )
         
-        return SingleProductView(isFavorite: false, product: product)
-            .environmentObject(AllProductsVM())
+        return SingleProductView(isFavorite: false, product: product, toggleFavorites: {
+            print(555)}
+        )
+            .environmentObject(CategoryProductsVM())
     }
 }
 

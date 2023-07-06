@@ -25,7 +25,7 @@ class SignupViewModel: ObservableObject {
     
     
     func register(fname: String, lname: String, username: String, password: String) {
-        if (InputValidation.inputIsValid(firstName, ofType: "name") && InputValidation.inputIsValid(lastName, ofType: "name") && InputValidation.inputIsValid(userName, ofType: "email") && InputValidation.inputIsValid(password, ofType: "password")) {
+        if (InputValidation.isValid(firstName, ofType: "name") && InputValidation.isValid(lastName, ofType: "name") && InputValidation.isValid(userName, ofType: "email") && InputValidation.isValid(password, ofType: "password")) {
             
             SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password) { success, error in
                 if success {

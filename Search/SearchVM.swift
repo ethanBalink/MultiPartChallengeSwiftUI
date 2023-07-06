@@ -13,6 +13,7 @@ class SearchVM: ObservableObject {
     @Published var filteredProducts: [Product] = []
     @Published var searchQuery = ""
     @Published var showFavs = false
+    
     init() {
         getAllProducts()
     }
@@ -22,7 +23,7 @@ class SearchVM: ObservableObject {
             filteredProducts = allProductsArr
         }
     }
-    // TODO: come back
+    
     func filterProducts() {
         if let allProductsArr = GeneralVM.shared.productArr {
             if !searchQuery.isEmpty {
@@ -57,7 +58,7 @@ class SearchVM: ObservableObject {
             if !filteredProducts.isEmpty {
                 filteredProducts = filteredProducts.filter {
                     if let id = Unwrapper.unwrap($0.id) {
-                        return AllProductsVM.shared.savedFavorites.contains(id)
+                        return CategoryProductsVM.shared.savedFavorites.contains(id)
                     }
                     else {
                         return false

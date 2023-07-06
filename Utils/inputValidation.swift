@@ -8,7 +8,7 @@
 import Foundation
 
 class InputValidation {
-    static func inputIsValid(_ dynamicVariable: Any, ofType: String) -> Bool {
+    static func isValid(_ dynamicVariable: Any, ofType: String) -> Bool {
         switch ofType {
         case "email":
             guard let email = dynamicVariable as? String else {

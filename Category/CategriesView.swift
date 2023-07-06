@@ -17,7 +17,7 @@ struct CategoriesView: View {
                 
                 List(categoriesArr, id: \.self) { category in
                     
-                    NavigationLink(destination: AllProductsView(category:category), label: {
+                    NavigationLink(destination: CategoryProducts(category:category), label: {
                         Text(category.capitalized)
                     })
                 }

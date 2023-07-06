@@ -7,8 +7,9 @@
 
 import Foundation
 import SwiftUI
-class AllProductsVM: ObservableObject {
-   @ObservedObject static var shared = AllProductsVM()
+class CategoryProductsVM: ObservableObject {
+    
+   @ObservedObject static var shared = CategoryProductsVM()
     @Published var savedProducts: [Product]?
     @Published var showingFavs = false
     @Published var savedFavorites: Set<Int> = []
@@ -17,7 +18,6 @@ class AllProductsVM: ObservableObject {
     init() {
         
         self.savedFavorites = db.load()
-        
     }
     
     func getCategorieProductsFor(_ category: String, inArray unFilteredArr: [Product]) {
