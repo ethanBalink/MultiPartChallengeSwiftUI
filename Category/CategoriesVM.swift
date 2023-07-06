@@ -13,10 +13,11 @@ class CategorieVM {
     
     func getSingleCategory(productArr:[Product]) {
         for product in productArr {
-            if !(self.categoriesArr.contains(product.category)) {
-                self.categoriesArr.append(product.category)
+            if let productCategory = Unwrapper.unwrap(product.category){
+                if !(self.categoriesArr.contains(productCategory)) {
+                    self.categoriesArr.append(productCategory)
+                }
             }
         }
     }
-    
 }

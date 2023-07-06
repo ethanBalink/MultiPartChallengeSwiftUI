@@ -6,13 +6,10 @@
 //
 
 import Foundation
+
 class SignupAPI {
     
-    static var shared = SignupAPI()
-    
-    var token: String = ""
-    
-    func registerAPI(fname: String, lname: String, username: String, password: String, completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
+    static func registerAPI(fname: String, lname: String, username: String, password: String, completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
         
         if let url = URL(string: "https://balink.onlink.dev/users/register") {
             
@@ -32,44 +29,20 @@ class SignupAPI {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             URLSession.shared.dataTask(with: request) { data, response, error in
-                if let recievedData = data {
-                    let tokenStruct = try? JSONDecoder().decode(RegisterToken.self, from: recievedData)
-                    if let convertedToken = tokenStruct?.token {
-                        // save in userdefaults
-                        UserDefaults.standard.set(convertedToken, forKey: "savedToken")
+                do {
+                    if let recievedData = data {
+                        let tokenStruct = try JSONDecoder().decode(RegisterToken.self, from: recievedData)
+                        UserDefaults.standard.set(tokenStruct.token, forKey: "savedToken")
                         completion(true, nil)
                     }
                     
                 }
-                else {
+                
+                catch {
                     completion(false, error)
-                    print("There was an error in registration")
                 }
-            }.resume()
+            }
+            .resume()
         }}
-    
-    
-    func fetchProductsFromAPI(token: String, completion: @escaping (_ productArr: [Product]?) -> Void) {
-        if let url = URL(string: "https://balink.onlink.dev/products") {
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                do {
-                    if let recievedProductsArr = data {
-                        let decodedArr = try JSONDecoder().decode([Product].self, from: recievedProductsArr)
-                        completion(decodedArr)
-                    }
-                } catch {
-                    
-                    completion(nil)
-                }
-            }.resume()
-        }
-        
-    }// func
-    
     
 }// class

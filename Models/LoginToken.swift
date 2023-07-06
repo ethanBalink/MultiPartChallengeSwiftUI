@@ -8,9 +8,10 @@
 import Foundation
 
 struct LoginToken: Codable {
-    var firstname: String?
-    var lastname: String?
-    var token: String?
+    
+    let firstname: String?
+    let lastname: String?
+    let token: String?
     
 }
 

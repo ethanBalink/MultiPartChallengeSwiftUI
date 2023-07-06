@@ -19,8 +19,10 @@ struct AllProductsView: View {
                 
                 List(mainAllProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
-                    SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(product.id), product: product)
-                        .environmentObject(mainAllProductsVM)
+                    if let id = Unwrapper.unwrap(product.id) {
+                        SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product)
+                            .environmentObject(mainAllProductsVM)
+                    }
                     
                 }
                 .onAppear {

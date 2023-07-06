@@ -33,7 +33,7 @@ struct SingleProductView: View {
             AsyncImage(url: product.thumbnail,scale: 5)
                 .cornerRadius(10)
             
-            Text("$\(product.price)")
+            Text("$" + String(Unwrapper.unwrap(product.price) ?? 0) )
                 .foregroundColor(.green)
                 .bold()
             
@@ -45,9 +45,9 @@ struct SingleProductView: View {
     private func titleColumn() -> some View {
         VStack(alignment: .leading, spacing: 6.0) {
             
-            Text(product.brand)
+            Text(Unwrapper.unwrap(product.brand) ?? "")
                 .fontWeight(.light)
-            Text(product.title)
+            Text(Unwrapper.unwrap(product.title) ?? "")
                 .font(.headline)
             
             Image(systemName: isFavorite ? "star.fill":"star")
@@ -67,7 +67,7 @@ struct SingleProductView: View {
     private func descriptionColumn() -> some View {
         VStack (alignment: .leading, spacing: 6.0) {
             
-            Text(product.description)
+            Text(Unwrapper.unwrap(product.description) ?? "")
                 .font(.subheadline)
                 .lineLimit(4)
             

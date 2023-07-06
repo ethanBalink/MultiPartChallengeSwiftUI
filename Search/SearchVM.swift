@@ -22,18 +22,25 @@ class SearchVM: ObservableObject {
             filteredProducts = allProductsArr
         }
     }
+    // TODO: come back
     func filterProducts() {
         if let allProductsArr = GeneralVM.shared.productArr {
-            
             if !searchQuery.isEmpty {
                 filteredProducts = allProductsArr.filter {
-                    let productTitleAndBrandWordsArr =  $0.title.lowercased().split(separator: " ") + $0.brand.lowercased().split(separator: " ")
+                    if let title = Unwrapper.unwrap($0.title), let brand = Unwrapper.unwrap($0.brand) {
+                        let productTitleAndBrandWordsArr =  title.lowercased().split(separator: " ") + brand.lowercased().split(separator: " ")
+                        
                     for partOfWord in productTitleAndBrandWordsArr {
+                        
                         if partOfWord.hasPrefix(searchQuery.lowercased()) {
                             return true
                         }
                     }
                     return false
+                }
+                    else {
+                        return false
+                    }
                 }
             }
             
@@ -49,7 +56,12 @@ class SearchVM: ObservableObject {
         if showFavs {
             if !filteredProducts.isEmpty {
                 filteredProducts = filteredProducts.filter {
-                    AllProductsVM.shared.savedFavorites.contains($0.id)
+                    if let id = Unwrapper.unwrap($0.id) {
+                        return AllProductsVM.shared.savedFavorites.contains(id)
+                    }
+                    else {
+                        return false
+                    }
                 }
             }
         }
@@ -57,9 +69,9 @@ class SearchVM: ObservableObject {
             getAllProducts()
         }
         
-        
+    }
     }
     
     
-}
+
 

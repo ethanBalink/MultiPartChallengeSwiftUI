@@ -17,7 +17,7 @@ class GeneralVM {
     
     func fetchProducts(_ completion: @escaping (_ success: Bool) -> Void) {
         if let savedToken = UserDefaults.standard.object(forKey: "savedToken") as? String {
-            SignupAPI.shared.fetchProductsFromAPI(token: savedToken, completion: { productArr in
+            FetchProductsAPI.fetchProductsFromAPI(token: savedToken) { productArr in
                 if let recievedProducts = productArr {
                     self.productArr = recievedProducts
                     CategorieVM.shared.getSingleCategory(productArr: recievedProducts) // adding categories to shared instance
@@ -29,7 +29,6 @@ class GeneralVM {
                 
                 
             }// completion
-            )// func args
         }// if token exists
     }// func
     

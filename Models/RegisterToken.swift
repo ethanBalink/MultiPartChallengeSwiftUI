@@ -8,6 +8,7 @@
 import Foundation
 
 struct RegisterToken: Codable {
-   var token: String?
+    
+   let token: String?
     
 }

@@ -48,14 +48,14 @@ class SignupViewModel: ObservableObject {
     
     
     func register(fname: String, lname: String, username: String, password: String,_ completion: @escaping (_ success: Bool) -> Void) {
-        SignupAPI.shared.registerAPI(fname: fname, lname: lname, username: username, password: password, completion: { success, error in
+        SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password, completion: { success, error in
             if success {
                     // TODO: change fetchproducts to different file
                     completion(true)
                 }
                 
              else if error != nil {
-                print(error ?? "")
+                 print(error as Any)
                 completion(false)
             }
             else {

@@ -36,6 +36,6 @@ class InputValidation {
             return false
         }
     }
-
+    
 }
 

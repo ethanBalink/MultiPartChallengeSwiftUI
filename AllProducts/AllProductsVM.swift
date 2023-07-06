@@ -32,7 +32,7 @@ class AllProductsVM: ObservableObject {
     }
     
     func sortFavs() {
-        //print(self.savedFavorites)
+       
         self.savedFavorites = db.load()
         withAnimation() {
             showingFavs.toggle()
@@ -42,9 +42,13 @@ class AllProductsVM: ObservableObject {
     var listOfProducts: [Product]  {
         if let currentProducts = savedProducts {
             if showingFavs {
-                print(self.savedFavorites)
-                return currentProducts.filter { savedFavorites.contains($0.id)
-                    
+                return currentProducts.filter {
+                    if let id = Unwrapper.unwrap($0.id) {
+                       return savedFavorites.contains(id)
+                    }
+                    else {
+                        return false
+                    }
                 }
             }
             return currentProducts
@@ -57,13 +61,16 @@ class AllProductsVM: ObservableObject {
     }
     
     func changeFavStatus(product: Product) {
+        if let id = Unwrapper.unwrap(product.id) {
+            
         
-        if savedFavorites.contains(product.id) {
-            savedFavorites.remove(product.id)
+        if savedFavorites.contains(id) {
+            savedFavorites.remove(id)
         } else {
-            savedFavorites.insert(product.id)
+            savedFavorites.insert(id)
         }
         db.save(items: savedFavorites)
+    }
     }
     
 }

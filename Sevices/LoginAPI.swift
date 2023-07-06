@@ -11,12 +11,10 @@ import Combine
 class LoginAPI {
     
     static var shared = LoginAPI()
-    var token: String = ""
     
     func loginAPI(username: String, password: String,_ completion:@escaping (_ success: Bool, _ error:Error?) -> Void) {
         
         if let url = URL(string: "https://balink.onlink.dev/users/login") {
-            
             
             let userCred: [String: Any] = [
                 "username": username,
@@ -31,17 +29,15 @@ class LoginAPI {
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
             URLSession.shared.dataTask(with: request) { data, response, error in
-                if let recievedData = data {
-                    let loginTokenStruct = try? JSONDecoder().decode(LoginToken.self, from: recievedData)
-                    if let convertedToken = loginTokenStruct?.token {
-                        UserDefaults.standard.set(convertedToken, forKey: "savedToken")
+                do {
+                    if let recievedData = data {
+                        let loginTokenStruct = try JSONDecoder().decode(LoginToken.self, from: recievedData)
+                        UserDefaults.standard.set(loginTokenStruct.token, forKey: "savedToken")
                         completion(true, nil)
                     }
-                    
                 }
-                else {
+                catch {
                     completion(false, error)
-                    print("There was an error in registration")
                 }
             }.resume()
             

@@ -13,20 +13,21 @@ struct SearchView: View {
     @StateObject var mySearchVM = SearchVM()
     
     var body: some View {
-        
-        NavigationView {
-            
+    
+        VStack {
+          
             List(mySearchVM.filteredProducts) { product in
-                // TODO: make nice tiles in the future
-                SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(product.id), product: product)
-                    .environmentObject(mainAllProductsVM)
-                
+                if let id = Unwrapper.unwrap(product.id){
+                    SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product)
+                        .environmentObject(mainAllProductsVM)
+                    
+                }
             }
-            
-            
+                
+       
         }
         .navigationTitle("All Products")
-        .searchable(text: $mySearchVM.searchQuery, prompt: "Search Product Or Brand")
+        .searchable(text: $mySearchVM.searchQuery,  placement: .navigationBarDrawer(displayMode: .always), prompt: "Search Product Or Brand")
         .onChange(of: mySearchVM.searchQuery) { _ in
             mySearchVM.filterProducts()
         }
@@ -35,9 +36,10 @@ struct SearchView: View {
         }
         .toolbar {
             Button(action: {
-                mySearchVM.showFavs.toggle()
-                mySearchVM.toggleFavorites()
-                
+                withAnimation(){
+                    mySearchVM.showFavs.toggle()
+                    mySearchVM.toggleFavorites()
+                }
             }, label: {
                 Image(systemName:  mySearchVM.showFavs ? "star.slash.fill": "star.fill")
             })
