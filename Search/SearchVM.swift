@@ -10,7 +10,7 @@ import SwiftUI
 
 class SearchVM: ObservableObject {
     
-    @Published var filteredProducts:[Product] = []
+    @Published var filteredProducts: [Product] = []
     @Published var searchQuery = ""
     @Published var showFavs = false
     init() {
@@ -39,7 +39,7 @@ class SearchVM: ObservableObject {
             
             else {
                 
-               getAllProducts()
+                getAllProducts()
                 
             }
         }

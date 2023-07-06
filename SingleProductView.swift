@@ -35,6 +35,7 @@ struct SingleProductView: View {
             
             Text("$\(product.price)")
                 .foregroundColor(.green)
+                .bold()
             
         }
         

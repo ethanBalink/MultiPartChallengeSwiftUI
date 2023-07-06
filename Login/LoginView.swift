@@ -15,53 +15,61 @@ struct LoginView: View {
     var body: some View {
         
         NavigationStack {
-            
-            Form {
-                HStack {
-                    Text("Username")
-                        .bold()
-                    TextField("", text: $myLoginVM.userName)
+            VStack {
+//                Form {
+                VStack(spacing: 20) {
+                    Divider()
+                    HStack {
+                        Text("Username")
+                            .bold()
+                        TextField("", text: $myLoginVM.userName)
+                            .frame(height: 30.0)
+                            .background(.ultraThinMaterial)
+                    }
+                    Divider()
+                    HStack {
+                        Text("Password")
+                            .bold()
+                        SecureField("", text: $myLoginVM.password)
+                            .frame(height: 30.0)
+                            .background(.ultraThinMaterial)
+                    }
+                    Divider()
                 }
-                HStack {
-                    Text("Password")
-                        .bold()
-                    SecureField("", text: $myLoginVM.password)
+                .cornerRadius(10)
+                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                
+//                }
+                
+                
+//                Spacer()
+                Button(action: {
+                    myLoginVM.showProgressBar = true
+                    myLoginVM.loginButtonAction()
+                }) {
+                    Text("Log in")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
                 }
-            }// form
-            Spacer()
-            Button(action: {
-                myLoginVM.showProgressBar = true
-                myLoginVM.loginButtonAction()
-                // { success in
-                //                    if success {
-                //                        ShowNextView = true
-                //                        showProgressBar = true
-                //                    } else {
-                //                        print("Unable to complete registration for some reason")
-                //                    }
-                //                }
-            }) {
-                Text("Log in")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                
+                if myLoginVM.showProgressBar{
+                    ProgressView() // Display the progress bar
+                        .progressViewStyle(CircularProgressViewStyle())
+                }
+                Spacer()
+                    .navigationTitle("Login")
+                    .navigationBarBackButtonHidden()
+                    .navigationDestination(isPresented: $myLoginVM.showNextView) {
+                        CategoriesView()
+                    }
+                                    
             }
-            .padding(.vertical, 20)
-            .padding(.horizontal, 50)
-            if myLoginVM.showProgressBar{
-                ProgressView() // Display the progress bar
-                    .progressViewStyle(CircularProgressViewStyle())
-            }
-            Spacer()
-                .navigationBarHidden(true)
-                .navigationDestination(isPresented: $myLoginVM.showNextView) {
-                    CategoriesView()
-                }
-                .padding(.bottom, 50)
-            
         }
+       
+        
     }
 }
 

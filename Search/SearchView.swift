@@ -10,11 +10,11 @@ import SwiftUI
 struct SearchView: View {
     
     @ObservedObject var mainAllProductsVM = AllProductsVM.shared
-    
     @StateObject var mySearchVM = SearchVM()
     
     var body: some View {
-        VStack {
+        
+        NavigationView {
             
             List(mySearchVM.filteredProducts) { product in
                 // TODO: make nice tiles in the future
@@ -22,6 +22,8 @@ struct SearchView: View {
                     .environmentObject(mainAllProductsVM)
                 
             }
+            
+            
         }
         .navigationTitle("All Products")
         .searchable(text: $mySearchVM.searchQuery, prompt: "Search Product Or Brand")

@@ -19,30 +19,45 @@ struct SignupView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
+            VStack(spacing: 20) {
+                Divider()
                 HStack {
                     Text("Firstname")
                         .bold()
                     TextField("", text: $firstName)
+                        .frame(height: 30.0)
+                        .background(.ultraThinMaterial)
                 }
+               
+                Divider()
                 HStack {
                     Text("Lastname")
                         .bold()
                     TextField("", text: $lastName)
+                        .frame(height: 30.0)
+                        .background(.ultraThinMaterial)
                 }
+                Divider()
                 HStack {
                     Text("Username")
                         .bold()
                     TextField("", text: $userName)
+                        .frame(height: 30.0)
+                        .background(.ultraThinMaterial)
                 }
+                Divider()
                 HStack {
                     Text("Password")
                         .bold()
-                    TextField("", text: $password)
+                    SecureField("", text: $password)
+                        .frame(height: 30.0)
+                        .background(.ultraThinMaterial)
                 }
+                Divider()
             }
-            
-            Spacer()
+            .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+        
+          
             
             Button(action: {
                 showProgressBar = true
@@ -67,9 +82,10 @@ struct SignupView: View {
                 ProgressView() // Display the progress bar
                     .progressViewStyle(CircularProgressViewStyle())
             }
-            
+                
             Spacer()
-                .navigationBarHidden(true)
+                .navigationTitle("Signup")
+                .navigationBarBackButtonHidden()
                 .navigationDestination(isPresented: $ShowNextView) {
                     LoginView()
                 }

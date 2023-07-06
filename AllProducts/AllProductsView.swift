@@ -15,7 +15,7 @@ struct AllProductsView: View {
     
     var body: some View {
         if let productsArray = GeneralVM.shared.productArr {
-            VStack {
+            NavigationView {
                 
                 List(mainAllProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
@@ -30,6 +30,7 @@ struct AllProductsView: View {
                 }
                 
             }
+            .navigationTitle(category.capitalized)
             .toolbar {
                 Button(action: mainAllProductsVM.sortFavs, label: {
                     Image(systemName:  mainAllProductsVM.showingFavs ? "star.slash.fill": "star.fill")
