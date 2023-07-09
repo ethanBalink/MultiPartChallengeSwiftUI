@@ -12,7 +12,7 @@ class LoginAPI {
     
     static var shared = LoginAPI()
     
-    func loginAPI(username: String, password: String,_ completion:@escaping (_ success: Bool, _ error:Error?) -> Void) {
+    func loginAPI(username: String, password: String) async throws -> Bool {
         
         if let url = URL(string: "https://balink.onlink.dev/users/login") {
             
@@ -28,22 +28,24 @@ class LoginAPI {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                do {
-                    if let recievedData = data {
-                        let loginTokenStruct = try JSONDecoder().decode(LoginToken.self, from: recievedData)
-                        UserDefaults.standard.set(loginTokenStruct.token, forKey: "savedToken")
-                        completion(true, nil)
+            return try await withCheckedThrowingContinuation { continuation in
+                URLSession.shared.dataTask(with: request) { data1, response, error in
+                    do {
+                        if let recievedData = data1 {
+                            let loginTokenStruct = try JSONDecoder().decode(LoginToken.self, from: recievedData)
+                            UserDefaults.standard.set(loginTokenStruct.token, forKey: "savedToken")
+                            continuation.resume(returning: true)
+                        }
                     }
-                }
-                catch {
-                    completion(false, error)
-                }
-            }.resume()
-            
-            
+                    catch {
+                        continuation.resume(throwing: error)
+                    }
+                }.resume()
+                
+                
+            }
         }
-        
+        return false
     }
     
     

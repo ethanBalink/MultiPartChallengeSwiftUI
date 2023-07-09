@@ -18,40 +18,31 @@ class SignupViewModel: ObservableObject {
     
     
     
-    func signupButtonAction() {
+    func signupButtonAction() async {
         
-        register(fname: firstName, lname: lastName, username: userName, password: password)
+        await register(fname: firstName, lname: lastName, username: userName, password: password)
     }
     
     
-    func register(fname: String, lname: String, username: String, password: String) {
+    func register(fname: String, lname: String, username: String, password: String) async {
         if (InputValidation.isValid(firstName, ofType: "name") && InputValidation.isValid(lastName, ofType: "name") && InputValidation.isValid(userName, ofType: "email") && InputValidation.isValid(password, ofType: "password")) {
-            
-            SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password) { success, error in
-                if success {
-                    AllProducts.shared.fetchProducts { success in
-                        if success {
-                            DispatchQueue.main.async {
-                                self.showProgressBar = false
-                                self.showNextView = true
-                            }                        }// if success fetchProducts
-                        else {
-                            print("Unable to get products for some reason")
-                            self.showProgressBar = false
-                            
-                        }
-                    }
+            do {
+                let _ = try await SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password)
+                let _ = try await  AllProducts.shared.fetchProducts
+                
+                DispatchQueue.main.async {
+                    self.showProgressBar = false
+                    self.showNextView = true
                 }
+                
+            }// if success fetchProducts
+            
+            catch {
+                print("Unable to get products for some reason")
+                self.showProgressBar = false
                 
             }
         }
-        else {
-            print("invalid input")
-        }
     }
-    
-    
-    
-    
     
 }

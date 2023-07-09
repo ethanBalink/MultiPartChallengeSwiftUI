@@ -83,7 +83,10 @@ struct SignupView: View {
         
         Button(action: {
             mySignupVM.showProgressBar = true
-            mySignupVM.signupButtonAction()},label: {
+            Task {
+               await mySignupVM.signupButtonAction()
+            }
+            },label: {
                 Text("Sign Up")
                     .font(.headline)
                     .foregroundColor(.white)

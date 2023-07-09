@@ -9,27 +9,36 @@ import Foundation
 import Combine
 class FetchProductsAPI {
     
-    static func fetchProductsFromAPI(token: String,_ completion: @escaping (_ productArr: [Product]?) -> Void) {
-        if let url = URL(string: "https://balink.onlink.dev/products") {
-            
-            var request = URLRequest(url: url)
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                do {
-                    if let recievedProductsArr = data {
-                        let decodedArr = try JSONDecoder().decode([Product].self, from: recievedProductsArr)
-                        completion(decodedArr)
-                    }
-                } catch {
-                    
-                    completion(nil)
-                }
-            }.resume()
-        }
+    static func fetchProductsFromAPI(token: String) async throws -> [Product] {
         
-    }// func
-    
+        guard let url = URL(string: "https://balink.onlink.dev/products") else { throw myErrors.invalidURL}
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        do {
+            let data = try await URLSession.shared.data(for: request)
+            let recievedProductsArr = data.0
+            let decodedArr = try JSONDecoder().decode([Product].self, from: recievedProductsArr)
+            return decodedArr
+        }
+     catch {
+         throw myErrors.invalidJSON
+        
+        
+    }
+}
+
+
+
+
+}// func
+
+enum myErrors: Error {
+    case invalidURL
+    case invalidJSON
+}
+
     
 //
 //
@@ -71,4 +80,4 @@ class FetchProductsAPI {
 //
 //    }
 //    
-}
+

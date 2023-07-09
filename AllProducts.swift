@@ -16,24 +16,18 @@ class AllProducts {
     
     // TODO: move fetchproducts func to seperate file
     
-    func fetchProducts(_ completion: @escaping (_ success: Bool) -> Void) {
+    func fetchProducts() async throws -> Bool {
         if let savedToken = UserDefaults.standard.object(forKey: "savedToken") as? String {
-            FetchProductsAPI.fetchProductsFromAPI(token: savedToken) { productArr in
-                if let recievedProducts = productArr {
-                    self.productArr = recievedProducts
-                    CategorieVM.shared.getSingleCategory(productArr: recievedProducts) // adding categories to shared instance
-                    completion(true)
-                }
-                else {
-                    completion(false)
-                }
-                
-                
+            do {
+                let productArr = try await FetchProductsAPI.fetchProductsFromAPI(token: savedToken)
+                self.productArr = productArr
+                CategorieVM.shared.getSingleCategory(productArr: productArr) // adding categories to shared instance
+                return true
+            }
+            catch {
+                throw error
             }// completion
         }// if token exists
+        return false
     }// func
-    
-    
-   
-    
 }

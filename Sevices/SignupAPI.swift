@@ -9,7 +9,7 @@ import Foundation
 
 class SignupAPI {
     
-    static func registerAPI(fname: String, lname: String, username: String, password: String,_ completion: @escaping (_ success: Bool, _ error:Error?) -> Void) {
+    static func registerAPI(fname: String, lname: String, username: String, password: String) async throws -> Bool {
         
         if let url = URL(string: "https://balink.onlink.dev/users/register") {
             
@@ -28,21 +28,25 @@ class SignupAPI {
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                do {
-                    if let recievedData = data {
-                        let tokenStruct = try JSONDecoder().decode(RegisterToken.self, from: recievedData)
-                        UserDefaults.standard.set(tokenStruct.token, forKey: "savedToken")
-                        completion(true, nil)
+            return try await withCheckedThrowingContinuation { continuation in
+                URLSession.shared.dataTask(with: request) { data1, response, error in
+                    do {
+                        if let recievedData = data1 {
+                            let tokenStruct = try JSONDecoder().decode(RegisterToken.self, from: recievedData)
+                            UserDefaults.standard.set(tokenStruct.token, forKey: "savedToken")
+                            continuation.resume(returning: true)
+                        }
+                        
                     }
                     
+                    catch {
+                        continuation.resume(throwing: error)
+                    }
                 }
-                
-                catch {
-                    completion(false, error)
-                }
+                .resume()
             }
-            .resume()
-        }}
+        }
+        return false
+    }
     
 }// class

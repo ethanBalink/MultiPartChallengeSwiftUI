@@ -69,7 +69,9 @@ struct LoginView: View {
     private func loginButton() -> some View {
         Button(action: {
             myLoginVM.showProgressBar = true
-            myLoginVM.loginButtonAction()
+            Task {
+                await myLoginVM.loginButtonAction()
+            }
         }) {
             Text("Log in")
                 .font(.headline)

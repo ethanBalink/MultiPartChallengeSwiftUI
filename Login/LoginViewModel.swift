@@ -14,42 +14,27 @@ class LoginViewModel: ObservableObject {
     @Published var showNextView = false
     @Published var showProgressBar = false
     
-    func loginButtonAction() {
+    func loginButtonAction() async {
         
-        login(username: userName,password: password)
+        await login(username: userName,password: password)
     }
     
     
     
-    func login(username: String, password: String) {
+    func login(username: String, password: String) async {
         if ( InputValidation.isValid(userName, ofType: "email") && InputValidation.isValid(password, ofType: "password")) {
-            LoginAPI.shared.loginAPI(username: username, password: password) { success,error in
+            do {
+                let _ = try await LoginAPI.shared.loginAPI(username: username, password: password)
+                let _ =  try await  AllProducts.shared.fetchProducts()
                 
-                if success {
-                    AllProducts.shared.fetchProducts { success in
-                        if success {
-                            DispatchQueue.main.async {
-                                self.showNextView = true
-                            }
-                            
-                        }// if success fetchProducts
-                        else {
-                            print("Unable to get products for some reason")
-                            DispatchQueue.main.async {
-                                self.showProgressBar = false
-                            }
-                            
-                        }
-                    }
-                } else {
-                    print("unable to login for some reason")
+                DispatchQueue.main.async {
+                    self.showNextView = true
+                    self.showProgressBar = false
                 }
             }
-            
+            catch {
+                print("Not work")
+            }
         }
-        else {
-            print("invalid input")
-        }
-        
     }
 }
