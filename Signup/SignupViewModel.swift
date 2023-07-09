@@ -19,16 +19,17 @@ class SignupViewModel: ObservableObject {
     
     
     func signupButtonAction() async {
-        
-        await register(fname: firstName, lname: lastName, username: userName, password: password)
+        do {
+            await register(fname: firstName, lname: lastName, username: userName, password: password)
+        }
     }
     
     
-    func register(fname: String, lname: String, username: String, password: String) async {
+    func register(fname: String, lname: String, username: String, password: String) async  {
         if (InputValidation.isValid(firstName, ofType: "name") && InputValidation.isValid(lastName, ofType: "name") && InputValidation.isValid(userName, ofType: "email") && InputValidation.isValid(password, ofType: "password")) {
             do {
                 let _ = try await SignupAPI.registerAPI(fname: fname, lname: lname, username: username, password: password)
-                let _ = try await  AllProducts.shared.fetchProducts
+                let _ = try await  AllProducts.shared.fetchProducts()
                 
                 DispatchQueue.main.async {
                     self.showProgressBar = false
@@ -46,3 +47,5 @@ class SignupViewModel: ObservableObject {
     }
     
 }
+    
+    

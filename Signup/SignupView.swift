@@ -30,7 +30,7 @@ struct SignupView: View {
             Spacer()
                 .navigationTitle("Signup")
                 .navigationDestination(isPresented: $mySignupVM.showNextView) {
-                    LoginView()
+                    CategoriesView()
                 }
                 .padding(.bottom, 50)
             

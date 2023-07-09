@@ -11,11 +11,7 @@ class AllProducts {
     
     var productArr: [Product]?
     static let shared = AllProducts()
-    
-    
-    
-    // TODO: move fetchproducts func to seperate file
-    
+
     func fetchProducts() async throws -> Bool {
         if let savedToken = UserDefaults.standard.object(forKey: "savedToken") as? String {
             do {

@@ -21,24 +21,25 @@ struct CategoryProducts: View {
             
             NavigationView {
                 
-                List(myCategoryProductsVM.listOfProducts) { product in
-                    // TODO: make nice tiles in the future
-                    if let id = product.id {
+                    List(myCategoryProductsVM.listOfProducts) { product in
                         
-                        SingleProductView(isFavorite: myCategoryProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
-                            myCategoryProductsVM.toggleFavorites(of: product)
-                        }
-                        )
+                        if let id = product.id {
+                            
+                            SingleProductView(isFavorite: myCategoryProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
+                                myCategoryProductsVM.toggleFavorites(of: product)
+                            }
+                            )
                             .environmentObject(myCategoryProductsVM)
+                        }
+                        
                     }
-                    
-                }
-                .onAppear {
-                    
-                    myCategoryProductsVM.getCategorieProductsFor(category, inArray: productsArray)
-                    
-                }
+                    .onAppear {
+                        
+                        myCategoryProductsVM.getCategorieProductsFor(category, inArray: productsArray)
+                        
+                    }
                 
+               
             }
             .navigationTitle(category.capitalized)
             .toolbar {
