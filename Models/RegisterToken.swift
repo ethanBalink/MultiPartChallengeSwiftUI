@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct RegisterToken: Codable {
+struct RegisterToken: Token, Codable {
     
-   let token: String?
+    let token: String?
     
 }

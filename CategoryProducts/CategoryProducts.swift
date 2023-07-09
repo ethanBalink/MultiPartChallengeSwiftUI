@@ -10,37 +10,40 @@ import SwiftUI
 
 struct CategoryProducts: View {
     
+   
+    
+    
     var category: String
-    @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
+    @ObservedObject var myCategoryProductsVM = CategoryProductsVM.shared
     
     var body: some View {
         if let productsArray = AllProducts.shared.productArr {
             
             NavigationView {
                 
-                List(mainAllProductsVM.listOfProducts) { product in
+                List(myCategoryProductsVM.listOfProducts) { product in
                     // TODO: make nice tiles in the future
-                    if let id = Unwrapper.unwrap(product.id) {
+                    if let id = product.id {
                         
-                        SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
-                            mainAllProductsVM.changeFavStatus(product: product)
+                        SingleProductView(isFavorite: myCategoryProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
+                            myCategoryProductsVM.toggleFavorites(of: product)
                         }
                         )
-                            .environmentObject(mainAllProductsVM)
+                            .environmentObject(myCategoryProductsVM)
                     }
                     
                 }
                 .onAppear {
                     
-                    mainAllProductsVM.getCategorieProductsFor(category, inArray: productsArray)
+                    myCategoryProductsVM.getCategorieProductsFor(category, inArray: productsArray)
                     
                 }
                 
             }
             .navigationTitle(category.capitalized)
             .toolbar {
-                Button(action: mainAllProductsVM.sortFavs, label: {
-                    Image(systemName:  mainAllProductsVM.showingFavs ? "star.slash.fill": "star.fill")
+                Button(action: myCategoryProductsVM.sortFavs, label: {
+                    Image(systemName:  myCategoryProductsVM.showingFavs ? "star.slash.fill": "star.fill")
                 })
             }
         }

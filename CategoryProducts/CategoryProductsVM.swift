@@ -7,7 +7,7 @@
 
 import Foundation
 import SwiftUI
-class CategoryProductsVM: ObservableObject {
+class CategoryProductsVM: ObservableObject, SavingFavorites {
     
    @ObservedObject static var shared = CategoryProductsVM()
     @Published var savedProducts: [Product]?
@@ -43,7 +43,7 @@ class CategoryProductsVM: ObservableObject {
         if let currentProducts = savedProducts {
             if showingFavs {
                 return currentProducts.filter {
-                    if let id = Unwrapper.unwrap($0.id) {
+                    if let id = $0.id {
                        return savedFavorites.contains(id)
                     }
                     else {
@@ -61,7 +61,7 @@ class CategoryProductsVM: ObservableObject {
     }
     
     func changeFavStatus(product: Product) {
-        if let id = Unwrapper.unwrap(product.id) {
+        if let id = product.id {
             
         
         if savedFavorites.contains(id) {
@@ -71,6 +71,10 @@ class CategoryProductsVM: ObservableObject {
         }
         db.save(items: savedFavorites)
     }
+    }
+    
+    func toggleFavorites(of product: Product) {
+       changeFavStatus(product: product)
     }
     
 }

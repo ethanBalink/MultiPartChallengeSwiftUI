@@ -28,7 +28,7 @@ class SearchVM: ObservableObject {
         if let allProductsArr = AllProducts.shared.productArr {
             if !searchQuery.isEmpty {
                 filteredProducts = allProductsArr.filter {
-                    if let title = Unwrapper.unwrap($0.title), let brand = Unwrapper.unwrap($0.brand) {
+                    if let title = $0.title, let brand = $0.brand {
                         let productTitleAndBrandWordsArr =  title.lowercased().split(separator: " ") + brand.lowercased().split(separator: " ")
                         
                     for partOfWord in productTitleAndBrandWordsArr {
@@ -57,7 +57,7 @@ class SearchVM: ObservableObject {
         if showFavs {
             if !filteredProducts.isEmpty {
                 filteredProducts = filteredProducts.filter {
-                    if let id = Unwrapper.unwrap($0.id) {
+                    if let id = $0.id {
                         return CategoryProductsVM.shared.savedFavorites.contains(id)
                     }
                     else {

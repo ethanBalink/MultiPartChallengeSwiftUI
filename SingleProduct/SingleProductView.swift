@@ -23,9 +23,9 @@ struct SingleProductView: View {
             thumbnailColumn()
             
         }
-        .padding(.horizontal)
-        .cornerRadius(10)
         
+        .cornerRadius(10)
+        .frame(height: 110)
     }
     
     @ViewBuilder
@@ -33,9 +33,12 @@ struct SingleProductView: View {
         
         VStack {
             
-            AsyncImage(url: product.thumbnail,scale: 5)
-                .cornerRadius(10)
-            
+            AsyncImage(url: product.thumbnail) { im in
+                im.image?.resizable()
+                    .scaledToFit()
+            }
+            .cornerRadius(10)
+            Spacer()
             Text("$" + String(product.price ?? 0) )
                 .foregroundColor(.green)
                 .bold()
@@ -52,10 +55,11 @@ struct SingleProductView: View {
                 .fontWeight(.light)
             Text(product.title ?? "")
                 .font(.headline)
+                .lineLimit(2)
             
             Image(systemName: isFavorite ? "star.fill":"star")
                 .onTapGesture {
-                 toggleFavorites()
+                    toggleFavorites()
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(.yellow)
@@ -104,7 +108,7 @@ struct SingleProductView_Previews: PreviewProvider {
         return SingleProductView(isFavorite: false, product: product, toggleFavorites: {
             print(555)}
         )
-            .environmentObject(CategoryProductsVM())
+        .environmentObject(CategoryProductsVM())
     }
 }
 

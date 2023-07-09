@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     
-    @ObservedObject var mainAllProductsVM = CategoryProductsVM.shared
+    @ObservedObject var myCategoryProductsVM = CategoryProductsVM.shared
     @StateObject var mySearchVM = SearchVM()
     
     var body: some View {
@@ -18,11 +18,11 @@ struct SearchView: View {
           
             List(mySearchVM.filteredProducts) { product in
                 
-                if let id = Unwrapper.unwrap(product.id) {
-                    SingleProductView(isFavorite: mainAllProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
-                        mainAllProductsVM.changeFavStatus(product: product)
+                if let id = product.id {
+                    SingleProductView(isFavorite: myCategoryProductsVM.savedFavorites.contains(id), product: product, toggleFavorites: {
+                        myCategoryProductsVM.changeFavStatus(product: product)
                     })
-                        .environmentObject(mainAllProductsVM)
+                        .environmentObject(myCategoryProductsVM)
                     
                 }
             }

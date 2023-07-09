@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct LoginToken: Codable {
+struct LoginToken: Token, Codable {
     
+    let token: String?
     let firstname: String?
     let lastname: String?
-    let token: String?
     
 }
 
